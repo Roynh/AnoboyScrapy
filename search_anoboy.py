@@ -70,7 +70,10 @@ class Anoboy(scrapy.Spider):
         
         sel = input('Pilih Server : ')
         sel_server = new_server[int(sel)]
-        webbrowser.get(Nanime.chrome_path).open(sel_server)
+        try : webbrowser.get(Anoboy.chrome_path).open(sel_server)
+        except : 
+            print(sel_server)
+            input('tekan enter')
     
     def SelEpisode(self, response) :
         ep_anime = response.xpath("//div[@class='singlelink']//li//text()").getall()

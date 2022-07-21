@@ -17,6 +17,7 @@ Dibuat dengan Scrapy.
 
 * install Scrapy
 * pip install Scrapy
+* you may change chrome_path or any browser path to open link automatically
 
 ### Executing program
 
@@ -24,4 +25,4 @@ Dibuat dengan Scrapy.
 
 ## License
 
-This project is licensed under the  Apache-2.0 license License - see the LICENSE.md file for details
+This project is licensed under the Apache-2.0 license License - see the LICENSE.md file for details
