@@ -70,6 +70,7 @@ class Anoboy(scrapy.Spider):
         
         sel = input('Pilih Server : ')
         sel_server = new_server[int(sel)]
+        print(f'link : {sel_server}')
         try : webbrowser.get(Anoboy.chrome_path).open(sel_server)
         except : 
             print(sel_server)
