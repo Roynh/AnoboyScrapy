@@ -19,7 +19,7 @@ class Anoboy(scrapy.Spider):
         title = response.xpath("//div[@class='column-content']//a[@rel='bookmark']//@title").getall()
         anime_link =  response.xpath("//div[@class='column-content']//a[@rel='bookmark']//@href").getall() 
         page_link = response.xpath("//div[@class='wp-pagenavi']//a[@class='page larger']//@href").get() 
-        page_now = response.xpath("//div[@class='wp-pagenavi']//span[@class='pages']//text()").get() 
+        page_now = response.xpath("//div[@class='wp-pagenavi']//span[@class='pages']//text()").get()
         
         os.system('cls' if os.name == 'nt' else 'clear')
         print('Perhatian : Jangan Memilih yang bertuliskan [Streaming] atau [Download]')
@@ -44,6 +44,7 @@ class Anoboy(scrapy.Spider):
 
     def WatchAnime(self, response) :
         servers = response.xpath("//div[@class='vmiror']//a//@data-video").getall()
+        names = response.xpath("//div[@class='pagetitle']//h1//text()").get()
 
         servers.pop(0)
         first =  servers[0]
@@ -56,6 +57,7 @@ class Anoboy(scrapy.Spider):
         new_server.insert(0,first)
 
         os.system('cls' if os.name == 'nt' else 'clear')
+        print('Anime : {}'.format(names))
         print('Server B-Tube : ')
         print('0] 720p')
         print('Server AC : ')
@@ -77,15 +79,20 @@ class Anoboy(scrapy.Spider):
             input('tekan enter')
     
     def SelEpisode(self, response) :
-        ep_anime = response.xpath("//div[@class='singlelink']//li//text()").getall()
-        ep_link = response.xpath("//div[@class='singlelink']//li//@href").getall()
+        ep_animes = response.xpath("//div[@class='singlelink']//li//text()").getall()
+        ep_links = response.xpath("//div[@class='singlelink']//li//@href").getall()
 
         os.system('cls' if os.name == 'nt' else 'clear')
-        for (jdl, i) in zip(ep_anime, range(len(ep_anime))) :
+        for (jdl, i) in zip(ep_animes, range(len(ep_animes))) :
             print(f"[{i}].Anime : {jdl}")
-        sel = (input('Pilih yang mana : '))
+        sel = (input("Pilih yang mana (ketik 'all' untuk semua): "))
+        if sel.lower() ==  'all' :
+            for ep in ep_links :
+                if ep is not None :
+                    ep_link = response.urljoin(ep)
+                    yield scrapy.Request(url=ep_link, callback=self.WatchAnime)
 
-        sel_ep = ep_link[int(sel)]
+        sel_ep = ep_links[int(sel)]
         if sel_ep is not None :
             sel_ep = response.urljoin(sel_ep)
             yield scrapy.Request(url=sel_ep, callback=self.WatchAnime)
